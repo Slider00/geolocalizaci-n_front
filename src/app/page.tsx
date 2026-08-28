@@ -225,7 +225,7 @@ export default function Home() {
 
       {/* Loading Overlay */}
       {isLoading && (
-        <div className="absolute inset-0 z-50 bg-zinc-950/80 backdrop-blur-md flex items-center justify-center">
+        <div className="absolute inset-0 z-[9999] bg-zinc-950/80 backdrop-blur-md flex items-center justify-center">
           <div className="flex flex-col items-center gap-3">
             <div className="animate-spin rounded-full h-12 w-12 border-2 border-zinc-800 border-t-red-500"></div>
             <span className="text-sm font-semibold tracking-wider animate-pulse text-zinc-300">Conectando a base de datos...</span>
@@ -235,7 +235,7 @@ export default function Home() {
 
       {/* Database connection error overlay */}
       {error && !isLoading && (
-        <div className="absolute inset-0 z-40 bg-zinc-950/95 flex items-center justify-center p-6 text-center select-none">
+        <div className="absolute inset-0 z-[9999] bg-zinc-950/95 flex items-center justify-center p-6 text-center select-none">
           <div className="max-w-md glass-panel p-6 rounded-xl border-red-900/30 bg-red-950/5 space-y-4 shadow-2xl">
             <AlertTriangle className="h-12 w-12 text-red-500 mx-auto animate-bounce" />
             <h3 className="text-lg font-bold text-white">Servidor Desconectado</h3>
@@ -336,7 +336,7 @@ export default function Home() {
 
       {/* 4. Interactive Toast Notification */}
       {toastMessage && (
-        <div className="fixed top-5 right-5 z-[500] glass-panel bg-emerald-950/85 border border-emerald-500/50 px-4 py-3.5 rounded-lg shadow-xl shadow-black/40 flex items-center gap-3 animate-fadeIn">
+        <div className="fixed top-5 right-5 z-[9999] glass-panel bg-emerald-950/85 border border-emerald-500/50 px-4 py-3.5 rounded-lg shadow-xl shadow-black/40 flex items-center gap-3 animate-fadeIn">
           <div className="h-2 w-2 rounded-full bg-emerald-400 animate-ping"></div>
           <span className="text-xs font-semibold text-emerald-200">
             {toastMessage}

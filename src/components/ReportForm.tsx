@@ -78,7 +78,7 @@ export default function ReportForm({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-end bg-black/60 backdrop-blur-sm animate-fadeIn">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-end bg-black/60 backdrop-blur-sm animate-fadeIn">
       {/* Background click close wrapper */}
       <div className="absolute inset-0 cursor-pointer" onClick={onClose} />
       
