@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SIG-Terremotos Colombia - Frontend Dashboard
 
-## Getting Started
+Aplicación web desarrollada con **Next.js 16 (React)**, **TypeScript** y **Leaflet** para la visualización en tiempo real y la gestión logística de damnificados por terremotos en Colombia.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🎨 Características Clave
+
+* **Mapa Interactivo Oscuro**: Implementa mosaicos vectoriales oscuros de **Esri (Dark Gray Canvas)** con todas las etiquetas geográficas de departamentos y municipios sin marcas de agua.
+* **Ondas Sísmicas Animadas**: Representación visual de sismos mediante marcadores de tipo radar con ondas concéntricas animadas en CSS que cambian de tamaño y color según su magnitud ($Mw$).
+* **Filtros en Tiempo Real**: Búsqueda por región, filtrado por rango de fechas (con arranque predeterminado del día de hoy), magnitud mínima y estados de atención de reportes.
+* **Cómputo Dinámico de Ayuda**: Dashboard derecho interactivo que consolida la suma total de suministros humanitarios (agua, comida, carpas) y víctimas graves/leves calculados a partir de los reportes del terreno.
+* **Registro de Damnificados**: Formulario integrado para reportar afectados, viviendas averiadas y suministros requeridos en coordenadas capturadas con un doble clic en el mapa.
+
+---
+
+## ⚙️ Configuración del Entorno
+
+El frontend se conecta al servidor backend Express. Debes configurar el endpoint en el archivo de variables de entorno en la raíz de `front_end/`.
+
+Crea los archivos `.env.development` y `.env.production` con el siguiente formato:
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:4000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🚀 Instalación y Ejecución
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Sigue estos pasos para correr el frontend localmente:
 
-## Learn More
+### 1. Instalar dependencias
+Desde la carpeta `front_end/`, ejecuta:
+```bash
+npm install
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 2. Ejecutar en modo desarrollo
+Inicia el servidor Next.js en caliente:
+```bash
+npm run dev
+```
+La aplicación estará disponible en [http://localhost:3000](http://localhost:3000).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 3. Compilar para producción
+Para compilar la aplicación optimizando rendimiento y código estático:
+```bash
+# Compilar código
+npm run build
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# Levantar servidor optimizado
+npm run start
+```
