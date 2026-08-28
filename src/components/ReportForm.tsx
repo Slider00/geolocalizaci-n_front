@@ -78,12 +78,9 @@ export default function ReportForm({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-end bg-black/60 backdrop-blur-sm animate-fadeIn">
-      {/* Background click close wrapper */}
-      <div className="absolute inset-0 cursor-pointer" onClick={onClose} />
-      
+    <div className="fixed inset-0 z-[9999] flex items-center justify-end pointer-events-none bg-transparent animate-fadeIn">
       {/* Sidebar Form container */}
-      <div className="relative w-full max-w-md h-full bg-zinc-950 border-l border-zinc-800 flex flex-col shadow-2xl p-6 overflow-y-auto">
+      <div className="relative w-full max-w-md h-full bg-zinc-950 border-l border-zinc-800 flex flex-col shadow-2xl p-6 overflow-y-auto pointer-events-auto">
         
         {/* Header */}
         <div className="flex items-center justify-between pb-4 border-b border-zinc-800">
