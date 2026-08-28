@@ -28,7 +28,7 @@ export default function ReportForm({
   
   const [needs, setNeeds] = useState<VictimReport["needs"]>([]);
 
-  // Update coordinates when map is double-clicked
+  // Actualiza las coordenadas cuando se hace doble clic en el mapa
   useEffect(() => {
     if (clickedCoords) {
       setLat(clickedCoords.lat.toFixed(5));
@@ -62,7 +62,7 @@ export default function ReportForm({
       status: "pending"
     });
 
-    // Reset Form
+    // Restablece el formulario
     setReporterName("");
     setPhone("");
     setLocationName("");
@@ -79,10 +79,10 @@ export default function ReportForm({
 
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-end pointer-events-none bg-transparent animate-fadeIn">
-      {/* Sidebar Form container */}
+      {/* Contenedor del formulario lateral */}
       <div className="relative w-full max-w-md h-full bg-zinc-950 border-l border-zinc-800 flex flex-col shadow-2xl p-6 overflow-y-auto pointer-events-auto">
         
-        {/* Header */}
+        {/* Cabecera */}
         <div className="flex items-center justify-between pb-4 border-b border-zinc-800">
           <div>
             <h3 className="text-lg font-bold text-white flex items-center gap-2">
@@ -101,10 +101,10 @@ export default function ReportForm({
           </button>
         </div>
 
-        {/* Form Body */}
+        {/* Cuerpo del formulario */}
         <form onSubmit={handleFormSubmit} className="flex-1 space-y-4 py-4 text-sm">
           
-          {/* Reporter info */}
+          {/* Información del reportante */}
           <div className="space-y-1">
             <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider">
               Nombre de Reportante *
@@ -132,7 +132,7 @@ export default function ReportForm({
             />
           </div>
 
-          {/* Location details */}
+          {/* Detalles de ubicación */}
           <div className="space-y-1">
             <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider">
               Nombre de Ubicación / Vereda / Barrio *
@@ -147,7 +147,7 @@ export default function ReportForm({
             />
           </div>
 
-          {/* Coordinates grid */}
+          {/* Cuadrícula de coordenadas */}
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1">
               <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider">
@@ -182,7 +182,7 @@ export default function ReportForm({
             * Haz doble clic en el mapa para capturar las coordenadas de forma automática.
           </span>
 
-          {/* Affected grid */}
+          {/* Cuadrícula de damnificados */}
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1">
               <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider">
@@ -210,7 +210,7 @@ export default function ReportForm({
             </div>
           </div>
 
-          {/* Needs list */}
+          {/* Lista de necesidades */}
           <div className="space-y-2">
             <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider">
               Suministros Requeridos
@@ -236,7 +236,7 @@ export default function ReportForm({
             </div>
           </div>
 
-          {/* Description */}
+          {/* Descripción */}
           <div className="space-y-1">
             <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider">
               Descripción de la Afectación *
@@ -251,7 +251,7 @@ export default function ReportForm({
             />
           </div>
 
-          {/* Footer Submit Buttons */}
+          {/* Botones de envío inferiores */}
           <div className="flex items-center gap-3 pt-4 border-t border-zinc-900">
             <button
               type="button"
@@ -262,7 +262,7 @@ export default function ReportForm({
             </button>
             <button
               type="submit"
-              className="flex-1 flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 rounded py-2 font-semibold text-white transition shadow-lg shadow-red-900/10 cursor-pointer"
+              className="flex-1 bg-red-600 hover:bg-red-700 text-white rounded py-2 font-semibold transition cursor-pointer flex items-center justify-center gap-2"
             >
               <Send className="h-4 w-4" />
               Enviar Reporte

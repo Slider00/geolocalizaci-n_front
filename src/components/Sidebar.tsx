@@ -68,7 +68,7 @@ export default function Sidebar({
   return (
     <aside className="w-full lg:w-96 border-r border-zinc-800 bg-zinc-950 flex flex-col h-full overflow-hidden">
       
-      {/* Search and Global Action */}
+      {/* Búsqueda y Acción Global */}
       <div className="p-4 border-b border-zinc-800 flex flex-col gap-3">
         <div className="relative">
           <Search className="absolute left-3 top-2.5 h-4 w-4 text-zinc-500" />
@@ -90,7 +90,7 @@ export default function Sidebar({
         </button>
       </div>
 
-      {/* Dynamic Filters */}
+      {/* Filtros Dinámicos */}
       <div className="p-4 border-b border-zinc-800 space-y-4 bg-zinc-900/30">
         <div>
           <div className="flex justify-between items-center mb-1.5">
@@ -150,7 +150,7 @@ export default function Sidebar({
           </div>
         </div>
 
-        {/* Date Filter Inputs */}
+        {/* Entradas del Filtro de Fechas */}
         <div className="space-y-1.5 pt-1">
           <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider block">
             Rango de Fechas:
@@ -178,7 +178,7 @@ export default function Sidebar({
         </div>
       </div>
 
-      {/* Tabs Selector UI */}
+      {/* Interfaz Seleccionadora de Pestañas */}
       <div className="flex border-b border-zinc-900 bg-zinc-950">
         <button
           onClick={() => setActiveTab("sismos")}
@@ -286,7 +286,7 @@ export default function Sidebar({
           </div>
         )}
 
-        {/* TAB 2: Reportes Ciudadanos */}
+        {/* PESTAÑA 2: Reportes Ciudadanos */}
         {activeTab === "reportes" && (
           <div className="p-4 space-y-3">
             {reports.length === 0 ? (

@@ -22,13 +22,13 @@ export default function StatsPanel({
   setSelectedReportId
 }: StatsPanelProps) {
   
-  // Calculations for global stats
+  // Cálculos para estadísticas globales
   const totalReportsCount = reports.length;
   const pendingReportsCount = reports.filter(r => r.status === 'pending').length;
   const inProgressReportsCount = reports.filter(r => r.status === 'in_progress').length;
   const resolvedReportsCount = reports.filter(r => r.status === 'resolved').length;
 
-  // Calculate resources needs globally (aggregating filtered events needs dynamically)
+  // Calcula las necesidades de suministros globalmente (acumulando dinámicamente los sismos filtrados)
   const needSumMap: Record<string, { requested: number; delivered: number }> = {
     "Carpas/Refugio": { requested: 0, delivered: 0 },
     "Agua Potable": { requested: 0, delivered: 0 },
@@ -54,20 +54,20 @@ export default function StatsPanel({
     { type: "Atención Médica", requested: needSumMap["Atención Médica"].requested, delivered: needSumMap["Atención Médica"].delivered, color: "bg-purple-500", svgColor: "#a855f7" }
   ].filter(n => n.requested > 0);
 
-  // Specific event stats
+  // Estadísticas específicas del sismo seleccionado
   const event = selectedEvent;
 
-  // Filter reports associated with this specific sismo
+  // Filtra reportes asociados a este sismo específico
   const associatedReports = event ? reports.filter(r => r.earthquakeId === event.id) : [];
 
   return (
     <section className="w-full lg:w-96 border-l border-zinc-800 bg-zinc-950 flex flex-col h-full overflow-y-auto p-4 gap-6 select-none">
       
       {event ? (
-        // Event Specific Stats View
+        // Vista de Estadísticas Específicas del Sismo
         <div className="space-y-6 animate-fadeIn">
           
-          {/* Header info */}
+          {/* Información de la cabecera */}
           <div className="flex justify-between items-start gap-4">
             <div>
               <div className="flex items-center gap-2 text-zinc-500 text-xs font-semibold uppercase tracking-wider mb-1">
@@ -90,7 +90,7 @@ export default function StatsPanel({
             </button>
           </div>
 
-          {/* Quick Metrics Grid */}
+          {/* Cuadrícula de Métricas Rápidas */}
           <div className="grid grid-cols-2 gap-3">
             <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-3">
               <span className="text-[10px] text-zinc-500 font-semibold uppercase tracking-wider">Magnitud</span>
@@ -111,14 +111,14 @@ export default function StatsPanel({
             </div>
           </div>
 
-          {/* Victim Status / Radial distribution simulation using custom bars */}
+          {/* Estado de Afectados / Distribución proporcional con barras personalizadas */}
           <div className="bg-zinc-900/40 border border-zinc-850 rounded-lg p-4 space-y-3.5">
             <h4 className="text-xs font-bold text-zinc-400 uppercase tracking-wider flex justify-between">
               <span>Estado de Afectados</span>
               <span className="text-zinc-200">Total: {event.affectedCount.toLocaleString()}</span>
             </h4>
             
-            {/* Custom Multi-segment visual bar */}
+            {/* Barra visual de segmentos múltiples */}
             <div className="h-2.5 w-full rounded-full bg-zinc-800 overflow-hidden flex">
               <div 
                 style={{ width: `${(event.victimsStatus.critical / event.affectedCount) * 100}%` }}
@@ -134,7 +134,7 @@ export default function StatsPanel({
               />
             </div>
 
-            {/* Legend with percentages */}
+            {/* Leyenda con porcentajes */}
             <div className="space-y-1.5 text-xs">
               <div className="flex items-center justify-between">
                 <span className="flex items-center gap-1.5 text-zinc-400">
@@ -166,7 +166,7 @@ export default function StatsPanel({
             </div>
           </div>
 
-          {/* Needs Tracking */}
+          {/* Seguimiento de Ayuda Humanitaria */}
           <div className="space-y-3">
             <h4 className="text-xs font-bold text-zinc-400 uppercase tracking-wider flex items-center gap-1.5">
               <PackageCheck className="h-4 w-4 text-emerald-500" />
@@ -188,13 +188,8 @@ export default function StatsPanel({
                     <div className="w-full bg-zinc-800 rounded-full h-1.5 overflow-hidden">
                       <div 
                         style={{ width: `${percent}%` }}
-                        className="bg-emerald-500 h-full rounded-full transition-all duration-500"
+                        className="h-full bg-emerald-500 rounded-full transition-all duration-550"
                       />
-                    </div>
-                    
-                    <div className="flex justify-between items-center text-[10px]">
-                      <span className="text-zinc-500">Porcentaje de entrega</span>
-                      <span className="text-emerald-400 font-bold">{percent.toFixed(0)}%</span>
                     </div>
                   </div>
                 );
@@ -202,10 +197,9 @@ export default function StatsPanel({
             </div>
           </div>
 
-          {/* Associated Local Reports */}
-          <div className="space-y-3 pt-4 border-t border-zinc-900">
-            <h4 className="text-xs font-bold text-zinc-400 uppercase tracking-wider flex items-center gap-1.5">
-              <MapPin className="h-4 w-4 text-blue-400" />
+          <div className="space-y-3">
+            <h4 className="text-xs font-bold text-zinc-450 uppercase tracking-wider flex items-center gap-1">
+              <MapPin className="h-4 w-4 text-zinc-500" />
               Reportes en Zona ({associatedReports.length})
             </h4>
 
@@ -252,7 +246,7 @@ export default function StatsPanel({
 
         </div>
       ) : (
-        // Global Portal Analytics
+        // Analíticas Globales del Portal
         <div className="space-y-6">
           
           <div>
@@ -268,7 +262,7 @@ export default function StatsPanel({
             </p>
           </div>
 
-          {/* Local reports summary stats cards */}
+          {/* Tarjetas de resumen de reportes ciudadanos */}
           <div className="bg-zinc-900/40 border border-zinc-850 rounded-lg p-4 space-y-3.5">
             <h4 className="text-xs font-bold text-zinc-400 uppercase tracking-wider">
               Resumen de Reportes Ciudadanos
@@ -289,37 +283,37 @@ export default function StatsPanel({
             </div>
           </div>
 
-          {/* Custom SVG Resource Chart */}
+          {/* Gráfica de Recursos Personalizada en SVG */}
           <div className="bg-zinc-900/40 border border-zinc-850 rounded-lg p-4 space-y-4">
             <h4 className="text-xs font-bold text-zinc-400 uppercase tracking-wider">
               Solicitud de Ayuda vs Despliegue
             </h4>
 
-            {/* Custom SVG Bar Chart */}
+            {/* Gráfica de Barras Personalizada en SVG */}
             <div className="w-full">
               <svg viewBox="0 0 300 160" className="w-full h-auto">
-                {/* Horizontal lines */}
+                {/* Líneas horizontales */}
                 <line x1="40" y1="20" x2="280" y2="20" stroke="#27272a" strokeWidth="1" strokeDasharray="3,3" />
                 <line x1="40" y1="60" x2="280" y2="60" stroke="#27272a" strokeWidth="1" strokeDasharray="3,3" />
                 <line x1="40" y1="100" x2="280" y2="100" stroke="#27272a" strokeWidth="1" strokeDasharray="3,3" />
                 <line x1="40" y1="130" x2="280" y2="130" stroke="#3f3f46" strokeWidth="1" />
 
-                {/* Y Axis labels */}
+                {/* Etiquetas del eje Y */}
                 <text x="32" y="24" fill="#71717a" fontSize="8" textAnchor="end">100%</text>
                 <text x="32" y="64" fill="#71717a" fontSize="8" textAnchor="end">50%</text>
                 <text x="32" y="104" fill="#71717a" fontSize="8" textAnchor="end">20%</text>
                 <text x="32" y="134" fill="#71717a" fontSize="8" textAnchor="end">0%</text>
 
-                {/* Chart bars rendering */}
+                {/* Renderizado de las barras de la gráfica */}
                 {globalNeeds.map((need, idx) => {
                   const x = 55 + idx * 55;
                   const ratio = need.delivered / need.requested;
-                  const barHeight = ratio * 100; // max height is 100px
+                  const barHeight = ratio * 100; // altura máxima es 100px
                   const y = 130 - barHeight;
 
                   return (
                     <g key={idx}>
-                      {/* Background target/requested bar */}
+                      {/* Barra de fondo para ayuda solicitada */}
                       <rect 
                         x={x} 
                         y="30" 
@@ -329,7 +323,7 @@ export default function StatsPanel({
                         fill="#1f1f23" 
                       />
                       
-                      {/* Foreground delivered bar */}
+                      {/* Barra frontal para ayuda entregada */}
                       <rect 
                         x={x} 
                         y={y} 
@@ -340,7 +334,7 @@ export default function StatsPanel({
                         className="transition-all duration-1000"
                       />
 
-                      {/* Tooltip percentage */}
+                      {/* Porcentaje emergente (tooltip) */}
                       <text 
                         x={x + 9} 
                         y={y - 4} 
@@ -357,7 +351,7 @@ export default function StatsPanel({
               </svg>
             </div>
 
-            {/* Chart Legend */}
+            {/* Leyenda de la Gráfica */}
             <div className="grid grid-cols-2 gap-x-2 gap-y-1.5 pt-2 border-t border-zinc-800 text-[10px]">
               {globalNeeds.map((need, idx) => (
                 <div key={idx} className="flex items-center gap-1.5">
@@ -368,7 +362,7 @@ export default function StatsPanel({
             </div>
           </div>
 
-          {/* Quick Informational Tip */}
+          {/* Consejo Informativo Rápido */}
           <div className="rounded-lg border border-blue-900/30 bg-blue-950/10 p-3.5 flex items-start gap-2.5">
             <Sparkles className="h-4 w-4 text-blue-400 shrink-0 mt-0.5" />
             <div className="text-xs text-blue-300">

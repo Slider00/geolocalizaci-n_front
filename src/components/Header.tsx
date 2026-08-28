@@ -20,7 +20,7 @@ export default function Header({ events, reports }: HeaderProps) {
     <header className="border-b border-zinc-800 bg-zinc-950/80 px-6 py-4 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         
-        {/* Title and Branding */}
+        {/* Título y Marca */}
         <div className="flex items-center gap-3">
           <div className="relative flex h-10 w-10 items-center justify-center rounded-lg bg-red-950 border border-red-700 text-red-500 shadow-lg shadow-red-950/20">
             <Activity className="h-5 w-5 animate-pulse" />
@@ -42,7 +42,7 @@ export default function Header({ events, reports }: HeaderProps) {
           </div>
         </div>
 
-        {/* Live Counters */}
+        {/* Contadores en Vivo */}
         <div className="flex flex-wrap items-center gap-4 sm:gap-6">
           
           <div className="flex items-center gap-2 rounded-lg bg-zinc-900/50 border border-zinc-800 px-3 py-1.5">
