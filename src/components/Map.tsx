@@ -38,7 +38,8 @@ export default function Map({
     const map = L.map(mapContainerRef.current, {
       center: [4.5709, -74.2973],
       zoom: 6,
-      zoomControl: false
+      zoomControl: false,
+      doubleClickZoom: false // Desactiva zoom al hacer doble clic para evitar animaciones y errores concurrentes
     });
 
     // Mosaicos oscuros premium de Esri (Sin llave)
@@ -72,6 +73,7 @@ export default function Map({
     });
 
     return () => {
+      map.stop(); // Detiene cualquier animación en curso antes de destruir el mapa
       map.remove();
       mapRef.current = null;
     };
@@ -160,7 +162,7 @@ export default function Map({
                  style="width: ${isSelected ? "20px" : "14px"}; height: ${isSelected ? "20px" : "14px"}; 
                         background-color: ${statusColor}; border-color: #ffffff; 
                         transform: ${isSelected ? "scale(1.2)" : "scale(1)"};">
-               <div class="h-1.5 w-1.5 rounded-full bg-white"></div>
+              <div class="h-1.5 w-1.5 rounded-full bg-white"></div>
               ${isSelected ? `
               <span class="absolute inline-flex h-full w-full rounded-full opacity-40 animate-ping" 
                     style="background-color: ${statusColor};"></span>
@@ -181,11 +183,22 @@ export default function Map({
           ? "En Proceso"
           : "Atendido";
 
+      const imagesHtml = report.images && report.images.length > 0
+        ? `
+          <div style="display: flex; gap: 4px; margin-top: 6px; overflow-x: auto; max-width: 220px;">
+            ${report.images.map((img) => `
+              <img src="${img}" style="width: 50px; height: 38px; object-fit: cover; border-radius: 4px; border: 1px solid #3f3f46;" />
+            `).join("")}
+          </div>
+        `
+        : "";
+
       const popupHtml = `
-        <div style="font-family: inherit;">
+        <div style="font-family: inherit; max-width: 230px;">
           <h4 style="margin: 0 0 4px 0; font-size: 13px; font-weight: bold; color: #ffffff;">Reporte: ${report.locationName}</h4>
           <p style="margin: 0 0 6px 0; font-size: 11px; color: #d4d4d8; line-height: 1.3;">${report.description}</p>
-          <div style="font-size: 11px; color: #a1a1aa; display: flex; flex-direction: column; gap: 2px;">
+          ${imagesHtml}
+          <div style="font-size: 11px; color: #a1a1aa; display: flex; flex-direction: column; gap: 2px; margin-top: 6px;">
             <span>Reporta: <strong>${report.reporterName}</strong></span>
             <span>Damnificados: <strong style="color: #f4f4f5;">${report.affectedPeople}</strong></span>
             <span>Estado: <strong style="color: ${statusColor};">${statusText}</strong></span>

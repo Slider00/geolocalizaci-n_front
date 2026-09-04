@@ -1,8 +1,9 @@
 "use client";
 
 import React from "react";
-import { Search, Flame, MapPin, PlusCircle, Calendar, ShieldAlert, AlertTriangle } from "lucide-react";
+import { Search, Flame, MapPin, PlusCircle, Calendar, ShieldAlert, AlertTriangle, Camera, Download, FileText } from "lucide-react";
 import { EarthquakeEvent, VictimReport } from "../data/mockData";
+import { generateSingleReportPDF, generateSummaryReportsPDF } from "../utils/pdfGenerator";
 
 interface SidebarProps {
   events: EarthquakeEvent[];
@@ -289,6 +290,16 @@ export default function Sidebar({
         {/* PESTAÑA 2: Reportes Ciudadanos */}
         {activeTab === "reportes" && (
           <div className="p-4 space-y-3">
+            {reports.length > 0 && (
+              <button
+                onClick={() => generateSummaryReportsPDF(reports)}
+                className="w-full py-2 px-3 bg-zinc-900 hover:bg-zinc-850 border border-zinc-800 hover:border-red-500/40 rounded-lg flex items-center justify-center gap-2 text-xs font-semibold text-zinc-300 hover:text-white transition cursor-pointer group shadow-sm"
+              >
+                <Download className="h-4 w-4 text-red-500 group-hover:scale-110 transition-transform" />
+                Exportar Todos en PDF ({reports.length})
+              </button>
+            )}
+
             {reports.length === 0 ? (
               <div className="py-8 px-4 text-center flex flex-col items-center justify-center gap-2.5 rounded-lg border border-dashed border-zinc-850 bg-zinc-900/10">
                 <ShieldAlert className="h-6 w-6 text-zinc-600" />
@@ -349,8 +360,36 @@ export default function Sidebar({
                         {report.description}
                       </p>
 
+                      {/* Galería rápida de fotos si existen */}
+                      {report.images && report.images.length > 0 && (
+                        <div className="flex gap-1.5 mb-2 overflow-x-auto pb-1 scrollbar-thin">
+                          {report.images.map((imgUrl, imgIdx) => (
+                            <div key={imgIdx} className="relative h-12 w-16 flex-shrink-0 rounded overflow-hidden border border-zinc-800 bg-zinc-950">
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img
+                                src={imgUrl}
+                                alt={`Evidencia ${imgIdx + 1}`}
+                                className="w-full h-full object-cover hover:scale-105 transition-transform duration-200 cursor-pointer"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  window.open(imgUrl, "_blank");
+                                }}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
                       <div className="flex items-center justify-between text-[10px] text-zinc-500 pt-2 border-t border-zinc-900">
-                        <span>Reporta: {report.reporterName}</span>
+                        <span className="flex items-center gap-1">
+                          Reporta: {report.reporterName}
+                          {report.images && report.images.length > 0 && (
+                            <span className="inline-flex items-center gap-0.5 text-red-400 font-semibold text-[9px] bg-red-500/10 px-1 py-0.5 rounded border border-red-500/20">
+                              <Camera className="h-2.5 w-2.5" />
+                              {report.images.length}
+                            </span>
+                          )}
+                        </span>
                         <div className="flex gap-2">
                           <span className="font-bold text-zinc-300">
                             👤 {report.affectedPeople} damn.
@@ -364,11 +403,40 @@ export default function Sidebar({
                       </div>
 
                       {isSelected && (
-                        <div className="mt-2.5 pt-2 border-t border-zinc-850 text-xs text-zinc-300 space-y-1 bg-zinc-950/30 p-2 rounded">
+                        <div className="mt-2.5 pt-2 border-t border-zinc-850 text-xs text-zinc-300 space-y-2 bg-zinc-950/30 p-2.5 rounded">
                           <p className="text-[11px] text-zinc-400"><span className="text-zinc-500">Fecha:</span> {formatDate(report.date)}</p>
                           {report.phone && (
                             <p className="text-[11px] text-zinc-400"><span className="text-zinc-500">Contacto:</span> {report.phone}</p>
                           )}
+                          
+                          {/* Galería ampliada cuando está seleccionado */}
+                          {report.images && report.images.length > 0 && (
+                            <div className="pt-1">
+                              <span className="text-[10px] font-semibold text-zinc-400 uppercase tracking-wider block mb-1 flex items-center gap-1">
+                                <Camera className="h-3 w-3 text-red-400" />
+                                Fotos de Evidencia ({report.images.length})
+                              </span>
+                              <div className="grid grid-cols-2 gap-1.5">
+                                {report.images.map((imgUrl, imgIdx) => (
+                                  <a
+                                    key={imgIdx}
+                                    href={imgUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="relative aspect-video rounded overflow-hidden border border-zinc-800 bg-zinc-900 group"
+                                  >
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                    <img
+                                      src={imgUrl}
+                                      alt={`Foto de daños ${imgIdx + 1}`}
+                                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                                    />
+                                  </a>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
                           <div className="flex flex-wrap gap-1 mt-2">
                             {report.needs.map((need, i) => (
                               <span key={i} className="text-[9px] bg-zinc-900 border border-zinc-800 px-1.5 py-0.5 rounded text-zinc-300 font-medium">
@@ -376,6 +444,18 @@ export default function Sidebar({
                               </span>
                             ))}
                           </div>
+
+                          {/* Botón para descargar Ficha Técnica PDF */}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              generateSingleReportPDF(report);
+                            }}
+                            className="w-full mt-2.5 py-1.5 px-2 bg-red-600/20 hover:bg-red-600/30 border border-red-500/40 rounded flex items-center justify-center gap-1.5 text-xs font-semibold text-red-400 hover:text-red-300 transition cursor-pointer shadow-sm"
+                          >
+                            <FileText className="h-3.5 w-3.5" />
+                            Descargar Ficha PDF
+                          </button>
                         </div>
                       )}
                     </div>

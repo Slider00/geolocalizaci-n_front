@@ -27,6 +27,7 @@ export interface VictimReport {
   earthquakeId?: string;
   reporterName: string;
   description: string;
+  images?: string[];
   lat: number;
   lng: number;
   affectedPeople: number;

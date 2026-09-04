@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { X, Send, MapPin } from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
+import { X, Send, MapPin, Camera, Trash2, ImagePlus } from "lucide-react";
 import { VictimReport } from "../data/mockData";
 
 interface ReportFormProps {
@@ -25,8 +25,10 @@ export default function ReportForm({
   const [affectedPeople, setAffectedPeople] = useState("5");
   const [affectedHouses, setAffectedHouses] = useState("0");
   const [description, setDescription] = useState("");
+  const [images, setImages] = useState<string[]>([]);
   
   const [needs, setNeeds] = useState<VictimReport["needs"]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Actualiza las coordenadas cuando se hace doble clic en el mapa
   useEffect(() => {
@@ -40,6 +42,29 @@ export default function ReportForm({
     setNeeds((prev) =>
       prev.includes(need) ? prev.filter((n) => n !== need) : [...prev, need]
     );
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+
+    Array.from(files).forEach((file) => {
+      if (!file.type.startsWith("image/")) return;
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (event.target?.result) {
+          setImages((prev) => [...prev, event.target!.result as string]);
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+
+    if (e.target) e.target.value = "";
+  };
+
+  const handleRemoveImage = (index: number) => {
+    setImages((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleFormSubmit = (e: React.FormEvent) => {
@@ -59,6 +84,7 @@ export default function ReportForm({
       affectedHouses: parseInt(affectedHouses) || 0,
       needs: needs as any,
       description,
+      images,
       status: "pending"
     });
 
@@ -72,6 +98,7 @@ export default function ReportForm({
     setAffectedHouses("0");
     setDescription("");
     setNeeds([]);
+    setImages([]);
     onClose();
   };
 
@@ -249,6 +276,61 @@ export default function ReportForm({
               placeholder="Describa los daños estructurales, colapso de vías, estado físico de los damnificados..."
               className="w-full rounded bg-zinc-900 border border-zinc-800 px-3 py-2 text-white placeholder-zinc-600 focus:outline-none focus:ring-1 focus:ring-red-500"
             />
+          </div>
+
+          {/* Sección de Carga de Imágenes de Evidencia */}
+          <div className="space-y-2 pt-2 border-t border-zinc-900">
+            <div className="flex items-center justify-between">
+              <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider flex items-center gap-1.5">
+                <Camera className="h-3.5 w-3.5 text-red-500" />
+                Fotografías de Daños y Zonas Afectadas
+              </label>
+              <span className="text-[10px] text-zinc-500">
+                {images.length} {images.length === 1 ? "foto" : "fotos"}
+              </span>
+            </div>
+
+            <input
+              type="file"
+              ref={fileInputRef}
+              accept="image/*"
+              multiple
+              onChange={handleImageUpload}
+              className="hidden"
+            />
+
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="w-full py-2.5 px-3 bg-zinc-900 hover:bg-zinc-850 border border-dashed border-zinc-750 hover:border-red-500/50 rounded-lg flex items-center justify-center gap-2 text-xs font-medium text-zinc-300 transition cursor-pointer group"
+            >
+              <ImagePlus className="h-4 w-4 text-red-400 group-hover:scale-110 transition-transform" />
+              Adjuntar Fotos de Daños (PNG, JPG)
+            </button>
+
+            {/* Vista previa de imágenes adjuntas */}
+            {images.length > 0 && (
+              <div className="grid grid-cols-3 gap-2 pt-2">
+                {images.map((imgSrc, idx) => (
+                  <div key={idx} className="relative group aspect-square rounded-md overflow-hidden bg-zinc-900 border border-zinc-800">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={imgSrc}
+                      alt={`Daño adjunto ${idx + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveImage(idx)}
+                      className="absolute top-1 right-1 p-1 rounded-full bg-red-600/90 text-white opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer shadow-md hover:bg-red-700"
+                      title="Eliminar foto"
+                    >
+                      <Trash2 className="h-3 w-3" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Botones de envío inferiores */}
